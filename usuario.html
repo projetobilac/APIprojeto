@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exemplo de Usuário</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+	$(document).ready(function(){
+	
+		$('#btnCadastrar').click(function(){
+
+            var dados = {
+                        "nome":$("#txtUsuario").val(),
+                        "email":$("#txtEmail").val(),
+                        "endereco":$("#txtEndereco").val(),
+                        "telefone":$("#txtTelefone").val(),
+                        "senha":$("#txtSenha").val(),
+                        "tipo":$("#rdTipo").val()
+                        
+                        
+            };
+		
+			$.ajax({  'url':'usuarioControle.php',
+                'data': JSON.stringify(dados), 
+                'type': 'POST',
+                'processData': false,
+                'contentType': 'application/json' ,
+            
+			success: function(msg)
+			{
+			    alert(msg.status);
+          $("#txtId").val('');
+          $("#txtUsuario").val('');
+          $("#txtEmail").val('');
+          $("#txtEndereco").val('');
+          $("#txtTelefone").val('');
+          $("#txtSenha").val('');
+          $("#rdTipo").val('');
+          
+      }
+				
+			});
+		});
+
+
+
+    $('#btnAtualizar').click(function(){
+
+          var dados = {
+                      "id":$("#txtId").val(),
+                      "nome":$("#txtUsuario").val(),
+                      "email":$("#txtEmail").val(),
+                      "endereco":$("#txtEndereco").val(),
+                      "telefone":$("#txtTelefone").val(),
+                      "senha":$("#txtSenha").val(),
+                      "tipo":$("#rdTipo").val()
+                      
+          };
+
+          $.ajax({  'url':'usuarioControle.php',
+              'data': JSON.stringify(dados), 
+              'type': 'PUT',
+              'processData': false,
+              'contentType': 'application/json' ,
+
+          success: function(msg)
+          {
+              alert(msg.status);
+              
+          }
+
+      });
+    });
+
+
+
+    $('#btnApagar').click(function(){
+
+            var dados = {
+                        "id":$("#txtId").val(),
+                      "nome":$("#txtUsuario").val(),
+                      "email":$("#txtEmail").val(),
+                      "endereco":$("#txtEndereco").val(),
+                      "telefone":$("#txtTelefone").val(),
+                      "senha":$("#txtSenha").val(),
+                      "tipo":$("#rdTipo").val()
+            };
+
+            $.ajax({  'url':'usuarioControle.php',
+                'data': JSON.stringify(dados), 
+                'type': 'DELETE',
+                'processData': false,
+                'contentType': 'application/json' ,
+
+            success: function(msg)
+            {
+                alert(msg.status);
+                $("#txtId").val('');
+                $("#txtUsuario").val('');
+                $("#txtEmail").val(''),
+                $("#txtEndereco").val(''),
+                $("#txtTelefone").val('');
+                $("#txtSenha").val('');
+                $("#rdTipo").val('');
+                
+                
+            }
+
+            });
+      });
+
+
+
+
+      $('#btnPsq').click(function(){
+
+            var id = $("#txtId").val();
+			
+			$.get("usuarioControle.php",
+			{
+				id:id
+			},
+			function(dados)
+			{
+				
+        if(dados != null)
+				{
+					$("#txtUsuario").val(dados.nome);
+					$("#txtEmail").val(dados.email),
+					$("#txtEndereco").val(dados.endereco),
+					$("#txtTelefone").val(dados.telefone);
+					$("#txtSenha").val(dados.senha);
+				    $("#rdTipo").val(dados.tipo);
+					
+					
+				
+					
+				}
+				else
+				{
+					alert("Deu erro");
+				}
+			},'json');
+        });
+
+
+
+        
+        
+
+
+
+	});
+</script>
+
+
+
+
+  </head>
+<body>
+
+<div class="container">
+  <h2>Exemplo - Usuário</h2>
+
+  <div class="form-group">
+    <label for="txtId">id:</label>
+    <input type="text" class="form-control" id="txtId"  name="txtId">
+
+    <button id="btnPsq">
+        buscar
+    </button>
+  </div>
+  
+    <div class="form-group">
+      <label for="usuario">Nome:</label>
+      <input type="text" class="form-control" id="txtUsuario"  name="txtUsuario">
+    </div>
+    
+    <div class="form-group">
+      <label for="txtEmail">Email:</label>
+      <input type="text" class="form-control" id="txtEmail"  name="txtEmail">
+    </div>
+    
+    <div class="form-group">
+      <label for="txtEndereco">Endereco:</label>
+      <input type="text" class="form-control" id="txtEndereco"  name="txtEndereco">
+    </div>
+    
+    <div class="form-group">
+      <label for="txtTelefone">Telefone:</label>
+      <input type="text" class="form-control" id="txtTelefone"  name="txtTelefone">
+    </div>
+	
+	<div class="form-group">
+      <label for="txtSenha">Senha:</label>
+      <input type="text" class="form-control" id="txtSenha"  name="txtSenha">
+    </div>
+	
+	<div class="form-group"> <!-- ACRESCENTEI RADIO BUTTON -->
+      <label for="txtSenha">Tipo:</label>
+      <input type="radio" class="form-control" id="rdTipo"  name="rdTipo" value="Gerador">Gerador
+      <input type="radio" class="form-control" id="rdTipo"  name="rdTipo" value="Catador">Catador
+    </div>
+	
+	
+	
+	<div class="form-group">
+      
+        <button id="btnCadastrar">
+            Cadastrar
+        </button>
+    </div>
+
+
+    <div class="form-group">
+      
+      <button id="btnAtualizar">
+          Atualizar
+      </button>
+  </div>
+
+  <div class="form-group">
+      
+    <button id="btnApagar">
+        Apagar
+    </button>
+</div>
+  
+</div>
+
+</body>
+</html>
